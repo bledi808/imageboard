@@ -1,12 +1,19 @@
 <!doctype html>
 <html>
-    <link rel="stylesheet" href="style.css" class="href">
-<head>
-    
-    <title></title>
+    <head>
+        
+        <title>imagboard 👨🏻‍🎨</title>
+        <link rel="stylesheet" href="style.css" class="href">
 </head>
 <body>
-    <h1>image board up and running</h1>
+    <div id="container" >
+        <div id="item-card" v-for="image in images">
+            <div id="item-image" >
+                <img v-bind:src="image.url">
+            </div>    
+            <p class="item-name">{{image.title}}</p>
+        </div>
+    </div>
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
