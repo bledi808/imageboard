@@ -4,6 +4,8 @@ const db = require("./db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
+const s3 = require("./s3");
+const s3Url = "https://s3.amazonaws.com/pimento-imgboard/";
 
 app.use(express.static("public"));
 
@@ -31,24 +33,26 @@ const uploader = multer({
 app.get("/images", (req, res) => {
     db.getImages()
         .then(({ rows }) => {
-            // console.log("result", rows);
-            // console.log("rows.length", rows.length);
             res.json(rows);
         })
         .catch((err) => {
-            console.log("error in /citiies with getImages()", err);
+            console.log("error in GET /images with getImages()", err);
         });
-    console.log();
 });
 
-app.post("/upload", uploader.single("file"), (req, res) => {
-    //multer adds the file and the body to the request obj - req.body
-    //for Part 2; do a db query to insert all of this info into the db (to do this; we need the following file properties: filename and )
-    //once inserted; send all of this info to vue
-    console.log("input values: ", req.body);
-    console.log("file: ", req.file);
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    const { username, title, description } = req.body;
+    const { filename } = req.file;
+    const url = s3Url + filename;
     if (req.file) {
-        res.json({ success: true });
+        db.addImages(url, username, title, description)
+            .then((results) => {
+                res.json(results);
+                console.log("results", results);
+            })
+            .catch((err) => {
+                console.log("error in POST /upload with addImages()", err);
+            });
     } else {
         res.json({ success: false });
     }

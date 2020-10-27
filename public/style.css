@@ -8,7 +8,21 @@ body {
     font-family: "roboto", sans-serif;
 }
 
-#container {
+#inputs {
+    margin-top: 3%;
+    /* border: 3px purple solid; */
+    justify-content: center;
+    display: flex;
+}
+
+.input {
+    /* border: 1px black solid; */
+
+    height: 10%;
+    margin: 0 1%;
+    /* width: 100%; */
+}
+#item-container {
     /* border: 3px purple solid; */
     background-color: mintcream;
     display: flex;
@@ -19,7 +33,7 @@ body {
     flex-wrap: wrap;
 }
 
-#item-card {
+#item-tile {
     width: 350px;
     height: 300px;
     /* border: 1px red solid; */
