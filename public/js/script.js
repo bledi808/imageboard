@@ -4,8 +4,10 @@ console.log("sanity");
 
 // IIFY
 
+Vue.component("some-component", {});
+
 new Vue({
-    el: "#container",
+    el: "#main",
     data: {
         images: [],
         //data properties that will store values of input fields

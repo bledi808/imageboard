@@ -8,6 +8,15 @@ module.exports.getImages = () => {
     return db.query(`SELECT * FROM images`);
 };
 
+module.exports.getImageById = (image_id) => {
+    return db.query(
+        `
+        SELECT * FROM images
+        WHERE id=$1`,
+        [image_id]
+    );
+};
+
 module.exports.addImages = (url, username, title, description) => {
     return db.query(
         `

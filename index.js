@@ -28,7 +28,11 @@ const uploader = multer({
 });
 
 ///////////////////////////////////////middleware
-
+app.use(
+    express.urlencoded({
+        extended: false,
+    })
+);
 ///////////////////////////////////////routes
 app.get("/images", (req, res) => {
     db.getImages()

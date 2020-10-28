@@ -66,3 +66,56 @@ img {
     /* border: 1px blue solid; */
     text-align: right;
 }
+
+/* MODAL */
+#overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.712);
+    /* visibility: hidden; */
+    /* transition: 1s; */
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal {
+    width: 35vw;
+    height: 30vh;
+    /* border-radius: 5px; */
+    background-color: white;
+}
+
+#close-modal {
+    float: right;
+}
+
+#close-modal-x {
+    font-size: 25px;
+    color: dimgrey;
+    padding-right: 8px;
+    min-height: 1em;
+    width: 1em;
+}
+
+#modal-title {
+    font-size: 20px;
+    color: black;
+    font-style: bold;
+    margin: 10% 0 0 5%;
+}
+
+#modal-text1 {
+    font-size: 15px;
+    margin: 5% 5% 0 5%;
+}
+
+#modal-text2 {
+    font-size: 15px;
+    margin: 5% 5% 0 5%;
+}
