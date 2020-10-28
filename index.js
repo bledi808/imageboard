@@ -43,6 +43,19 @@ app.get("/images", (req, res) => {
             console.log("error in GET /images with getImages()", err);
         });
 });
+app.get("/images/:id", (req, res) => {
+    const { id } = req.params;
+    console.log("req.body:", req.params);
+    console.log("id:", id);
+    db.getImageById(id)
+        .then(({ rows }) => {
+            res.json(rows[0]);
+            console.log(rows);
+        })
+        .catch((err) => {
+            console.log("error in GET /images with getImages()", err);
+        });
+});
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { username, title, description } = req.body;

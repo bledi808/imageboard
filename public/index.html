@@ -17,23 +17,36 @@
         <div id=item-container>
             <div id="item-tile" v-for="image in images">
                 <div id="item-image" >
-                    <img v-bind:src="image.url">
+                    <img v-bind:src="image.url" @click="imagePopup(image.id)">
                 </div>    
                 <p class="item-name">{{image.title}}</p>
             </div>
+    <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
+            <my-component 
+                v-if="imageId"
+                :image-id ='imageId'
+                @close="closeModal" // closeMePlease
+            ></my-component>            
         </div>
+    </div>
+    <!-------------------------- COMPONENT CODE - CHILD OF MAIN VUE EL -------------------------->
+    <script id="template" type="text/x-template">
         <div id="overlay">
             <div id="modal">
                 <div id="close-modal">
-                    <p id="close-modal-x">x</p>
+                    <p id="close-modal-x" @click='closeModal'>x</p>
                 </div>
-                <p id="modal-title">Image popup!</p>
+                <div id="modal-image"  >
+                    <img id="modal-image" :src="preview.url">
+                </div>
+                <p id="modal-title">{{preview.title}}</p>
+
                 <p id="modal-text1">
-                    larger sized image</br>title of the image</br>desc of the image</br>username
+                    </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at}}
                 </p>
             </div>
         </div>
-    </div>
+    </script>    
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
