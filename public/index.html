@@ -1,10 +1,9 @@
 <!doctype html>
 <html>
-    <head>
-        
+    <head>     
         <title>imagboard 👨🏻‍🎨</title>
         <link rel="stylesheet" href="style.css" class="href">
-</head>
+    </head>
 <body>
     <div id="main" >    
         <form id="inputs">
@@ -14,16 +13,16 @@
             <input @change="selectImage" type="file" name="file" placeholder="image/*" class="input">
             <button @click="uploadImage" class="input">Submit</button>    
         </form>
-        <div id=item-container>          
-                <div id="item-tile" v-for="image in images">
-                    <a :href="'#'+ image.id" style="text-decoration:none">
-                        <div id="item-image" >
-                            <img v-bind:src="image.url">
-                        </div>    
-                        <p class="item-name">{{image.title}}</p>
-                    </a>    
-                </div>            
-        <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
+        <div id="item-container">          
+            <div id="item-tile" v-for="image in images">
+                <a :href="'#'+ image.id" style="text-decoration:none">
+                    <div id="item-image" >
+                        <img v-bind:src="image.url">
+                    </div>    
+                    <p class="item-name">{{image.title}}</p>
+                </a>    
+            </div>            
+    <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
             <my-component 
                 v-if="imageId"
                 :image-id ='imageId'
@@ -46,7 +45,7 @@
                 </div>
                 <p id="modal-title">{{preview.title}}</p>
 
-                <p id="modal-text1">
+                <p id="modal-text">
                     </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at}}
                 </p>
             </div>

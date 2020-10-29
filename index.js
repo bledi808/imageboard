@@ -40,7 +40,6 @@ app.get("/images", (req, res) => {
     db.getImages()
         .then(({ rows }) => {
             console.log("rows in GET /images:", rows);
-            console.log("rows id in GET /images", rows[rows.length - 1].id);
             res.json(rows);
         })
         .catch((err) => {
@@ -48,31 +47,30 @@ app.get("/images", (req, res) => {
         });
 });
 
-app.get("/more", (req, res) => {
-    // const { id } = req.body;
-    // console.log("req.body in GET /more", req.body);
-    db.getImages()
+app.get("/more/:lowestId", (req, res) => {
+    const { lowestId } = req.params;
+    console.log("req.params in GET /more", req.params);
+    db.loadMoreImages(lowestId)
         .then(({ rows }) => {
-            console.log("rows id in GET /more", rows[rows.length - 1].id);
-            let lowestId = rows[rows.length - 1].id;
-            db.loadMoreImages(lowestId)
-                .then(({ rows }) => {
-                    res.json(rows);
-                    console.log("rows in GET /more:", rows);
-                    console.log(
-                        "rows id in GET /more",
-                        rows[rows.length - 1].id
-                    );
-                })
-                .catch((err) => {
-                    console.log(
-                        "error in GET /more with loadMoreImages()",
-                        err
-                    );
-                });
+            res.json(rows);
+            console.log("rows in GET /more:", rows);
         })
         .catch((err) => {
-            console.log("error in GET /more with getImages()", err);
+            console.log("error in GET /more with loadMoreImages()", err);
+        });
+});
+
+app.get("/images/:id", (req, res) => {
+    const { id } = req.params;
+    console.log("req.body:", req.params);
+    console.log("id:", id);
+    db.getImageById(id)
+        .then(({ rows }) => {
+            res.json(rows[0]);
+            console.log("rows is in getImagebyId: ", rows);
+        })
+        .catch((err) => {
+            console.log("error in GET /images with getImages()", err);
         });
 });
 
@@ -92,20 +90,6 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     } else {
         res.json({ success: false });
     }
-});
-
-app.get("/images/:id", (req, res) => {
-    const { id } = req.params;
-    console.log("req.body:", req.params);
-    console.log("id:", id);
-    db.getImageById(id)
-        .then(({ rows }) => {
-            res.json(rows[0]);
-            console.log(rows);
-        })
-        .catch((err) => {
-            console.log("error in GET /images with getImages()", err);
-        });
 });
 
 app.listen(8080, () => {

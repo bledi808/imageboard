@@ -20,12 +20,7 @@
             },
         }, // used for clikcing next/back to access different image in modal mode
         mounted: function () {
-            //  make an axios request to the server to get info about the image the user clicked on (get url, title, description, username, created_at)
-
-            console.log("this in component mounted", this);
             const me = this;
-            // console.log("this:", this);
-            // console.log("this.imageId:", this.imageId);
             axios
                 .get(`/images/${this.imageId}`)
                 .then(function (response) {
@@ -67,7 +62,7 @@
                 .get("/images")
                 .then(function (response) {
                     me.images = response.data; // works
-                    console.log("me.images in axios /GET", me.images);
+                    console.log("me.images in axios /GET /images", me.images);
                 })
                 .catch(function (err) {
                     console.log("error in POST /images", err);
@@ -99,16 +94,25 @@
                         console.log("error in axios POST /upload", err);
                     });
             },
-            loadMore: function () {
+            loadMore: function (e) {
+                e.preventDefault();
                 console.log("LoadMore running");
-                const self = this;
-                let images = self.images;
+                let images = this.images;
+                let lowestId = images[images.length - 1].id;
+                // console.log("lowestId is loadMore axios", lowestId);
                 axios
-                    .get("/more")
+                    .get(`/more/${lowestId}`) //request to the server
                     .then(function (response) {
-                        console.log("response.data.rows", response.data);
-                        images.push(response.data);
-                        // images.unshift(response.data.rows); //determine what is sent here, probably mutliple rows, not a signle one - ie. response.data.rows
+                        // in .then(), we listen to server response
+                        console.log(
+                            "response.data in axios GET /more",
+                            response.data
+                        );
+                        for (let i = 0; i < response.data.length; i++) {
+                            images.push(response.data[i]);
+                        }
+
+                        console.log("me.images in axios GET /more", images);
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /more", err);
@@ -116,7 +120,7 @@
             },
             selectImage: function (e) {
                 console.log("selectImage running");
-                // console.log("file: ", e.target.files[0]); // location of the selected file and  access to the file
+
                 this.file = e.target.files[0]; // grab the selected file
             },
             imagePopup: function (e) {
