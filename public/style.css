@@ -17,8 +17,7 @@ body {
 
 .input {
     /* border: 1px black solid; */
-
-    height: 10%;
+    /* height: 10%; */
     margin: 0 1%;
     /* width: 100%; */
 }
@@ -35,14 +34,14 @@ body {
 
 #item-tile {
     width: 350px;
-    height: 300px;
+    height: 500px;
     /* border: 1px red solid; */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding: 1%;
     overflow: hidden;
-    justify-content: center;
+    justify-content: flex-end;
 
     /* flex-wrap: wrap; */
 }
@@ -127,4 +126,18 @@ img {
 
 #modal-title {
     z-index: 77;
+}
+
+.more-button {
+    align-self: center;
+    align-items: center;
+    /* border: 1px blue solid; */
+    text-align: center;
+    margin: 2% 0 1% 0;
+}
+
+#more {
+    /* border: 1px blue solid; */
+    width: 10%;
+    font-size: larger;
 }

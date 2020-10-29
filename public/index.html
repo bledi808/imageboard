@@ -11,25 +11,30 @@
             <input  v-model="title" type="text" name="title" placeholder="name" class="input">
             <input v-model="description" type="text" name="description" placeholder="description" class="input">
             <input v-model="username" type="text" name="username" placeholder="username" class="input">
-            <input @change="handleChange" type="file" name="file" placeholder="image/*" class="input">
-            <button @click="handleClick" class="input">submit</button>    
+            <input @change="selectImage" type="file" name="file" placeholder="image/*" class="input">
+            <button @click="uploadImage" class="input">Submit</button>    
         </form>
-        <div id=item-container>
-            <div id="item-tile" v-for="image in images">
-                <div id="item-image" >
-                    <img v-bind:src="image.url" @click="imagePopup(image.id)">
-                </div>    
-                <p class="item-name">{{image.title}}</p>
-            </div>
-    <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
+        <div id=item-container>          
+                <div id="item-tile" v-for="image in images">
+                    <a :href="'#'+ image.id" style="text-decoration:none">
+                        <div id="item-image" >
+                            <img v-bind:src="image.url">
+                        </div>    
+                        <p class="item-name">{{image.title}}</p>
+                    </a>    
+                </div>            
+        <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
             <my-component 
                 v-if="imageId"
                 :image-id ='imageId'
                 @close="closeModal" // closeMePlease
             ></my-component>            
         </div>
+        <div class="more-button">
+            <button id="more" @click="loadMore">More</button> 
+        </div>
     </div>
-    <!-------------------------- COMPONENT CODE - CHILD OF MAIN VUE EL -------------------------->
+        <!-------------------------- COMPONENT CODE - CHILD OF MAIN VUE EL -------------------------->
     <script id="template" type="text/x-template">
         <div id="overlay">
             <div id="modal">

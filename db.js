@@ -5,7 +5,30 @@ var db = spicedPg(
 );
 
 module.exports.getImages = () => {
-    return db.query(`SELECT * FROM images`);
+    return db.query(
+        `
+        SELECT * FROM images
+        ORDER BY id DESC
+        LIMIT 3;
+        `
+    );
+};
+
+module.exports.loadMoreImages = (lowestId) => {
+    return db.query(
+        `
+        SELECT url, username, title, description, id, 
+        (SELECT id FROM images
+            ORDER BY id ASC
+            LIMIT 1) 
+                AS "lowestId"
+        FROM images 
+        WHERE id < $1
+        ORDER BY id DESC
+        LIMIT 3;
+        `,
+        [lowestId]
+    );
 };
 
 module.exports.getImageById = (image_id) => {
