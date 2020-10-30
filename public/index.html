@@ -30,21 +30,21 @@
             ></my-component>            
         </div>
         <div class="more-button">
-            <button id="more" @click="loadMore">More</button> 
+            <button v-if="more" id="more" @click="loadMore">More</button> 
         </div>
     </div>
         <!-------------------------- COMPONENT CODE - CHILD OF MAIN VUE EL -------------------------->
     <script id="template" type="text/x-template">
-        <div id="overlay">
+        <div id="overlay-container">    
+            <div id="overlay" @click="closeModal"></div>
             <div id="modal">
                 <div id="close-modal">
-                    <p id="close-modal-x" @click='closeModal'>x</p>
+                    <p id="close-modal-x" @click="closeModal">x</p>
                 </div>
                 <div id="modal-image"  >
                     <img id="modal-image" :src="preview.url">
                 </div>
                 <p id="modal-title">{{preview.title}}</p>
-
                 <p id="modal-text">
                     </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at}}
                 </p>

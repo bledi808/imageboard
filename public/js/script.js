@@ -48,6 +48,7 @@
             username: "",
             file: null,
             imageId: location.hash.slice(1),
+            more: true,
         },
         mounted: function () {
             const me = this;
@@ -84,10 +85,6 @@
                 axios
                     .post("/upload", formData)
                     .then(function (response) {
-                        // console.log(
-                        //     "response.data.rows[0]",
-                        //     response.data.rows[0]
-                        // );
                         images.unshift(response.data.rows[0]);
                     })
                     .catch(function (err) {
@@ -97,22 +94,30 @@
             loadMore: function (e) {
                 e.preventDefault();
                 console.log("LoadMore running");
-                let images = this.images;
-                let lowestId = images[images.length - 1].id;
-                // console.log("lowestId is loadMore axios", lowestId);
+                let me = this;
+                let lowestId = this.images[this.images.length - 1].id;
                 axios
                     .get(`/more/${lowestId}`) //request to the server
                     .then(function (response) {
                         // in .then(), we listen to server response
                         console.log(
-                            "response.data in axios GET /more",
+                            "response.data in loadMore axios",
                             response.data
                         );
+                        console.log(
+                            "response.data[response.data.length - 1].id",
+                            response.data[response.data.length - 1].id
+                        );
+                        console.log("lowestId", lowestId);
                         for (let i = 0; i < response.data.length; i++) {
-                            images.push(response.data[i]);
+                            me.images.push(response.data[i]);
                         }
-
-                        console.log("me.images in axios GET /more", images);
+                        if (
+                            response.data[response.data.length - 1].id <=
+                            response.data[0].lowestId
+                        ) {
+                            me.more = null;
+                        }
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /more", err);
