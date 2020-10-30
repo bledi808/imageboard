@@ -59,3 +59,14 @@ module.exports.getCommentsById = (image_id) => {
         [image_id]
     );
 };
+
+module.exports.addComment = (comment, username, id) => {
+    return db.query(
+        `
+        INSERT INTO comments (comment, username, image_id)
+        VALUES ($1, $2, $3)
+        RETURNING *
+        `,
+        [comment, username, id]
+    );
+};

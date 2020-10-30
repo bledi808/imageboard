@@ -10,6 +10,8 @@
             return {
                 preview: "",
                 comments: [],
+                comment: "",
+                username: "",
             };
         },
         watch: {
@@ -44,6 +46,26 @@
             closeModal: function () {
                 // console.log("closeModal runs and about to EMIT from component");
                 this.$emit("close"); //
+            },
+            addComment: function (e) {
+                e.preventDefault();
+                console.log("addComment running");
+
+                let newComment = {
+                    comment: this.comment,
+                    username: this.username,
+                    id: this.imageId,
+                };
+                let me = this;
+                axios
+                    .post("/comment", newComment)
+                    .then(function (response) {
+                        me.comments.unshift(response.data);
+                        // console.log("me.comments", me.comments);
+                    })
+                    .catch(function (err) {
+                        console.log("error in axios POST /comment", err);
+                    });
             },
         },
     });

@@ -8,6 +8,7 @@ const s3 = require("./s3");
 const s3Url = "https://s3.amazonaws.com/pimento-imgboard/";
 
 app.use(express.static("public"));
+app.use(express.json());
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -86,8 +87,8 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 app.get("/comments/:id", (req, res) => {
     const { id } = req.params;
-    console.log("req.params in GET /comments/id:", req.params);
-    console.log("id:", id);
+    // console.log("req.params in GET /comments/id:", req.params);
+    // console.log("id:", id);
     db.getCommentsById(id)
         .then(({ rows }) => {
             res.json(rows);
@@ -95,6 +96,20 @@ app.get("/comments/:id", (req, res) => {
         })
         .catch((err) => {
             console.log("error in GET /images with getImages()", err);
+        });
+});
+
+app.post("/comment", (req, res) => {
+    console.log("req.body in POST /comment", req.body);
+    const { comment, username, id } = req.body;
+
+    db.addComment(comment, username, id)
+        .then(({ rows }) => {
+            res.json(rows[0]);
+            console.log("results in POST /comment", rows);
+        })
+        .catch((err) => {
+            console.log("error in POST /upload with addImages()", err);
         });
 });
 
