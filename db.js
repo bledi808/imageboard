@@ -9,7 +9,7 @@ module.exports.getImages = () => {
         `
         SELECT * FROM images
         ORDER BY id DESC
-        LIMIT 3;
+        LIMIT 6;
         `
     );
 };
@@ -25,7 +25,7 @@ module.exports.loadMoreImages = (lowestId) => {
         FROM images 
         WHERE id < $1
         ORDER BY id DESC
-        LIMIT 3;
+        LIMIT 6;
         `,
         [lowestId]
     );
@@ -48,5 +48,14 @@ module.exports.addImages = (url, username, title, description) => {
         RETURNING *
         `,
         [url, username, title, description]
+    );
+};
+
+module.exports.getCommentsById = (image_id) => {
+    return db.query(
+        `
+        SELECT * FROM comments
+        WHERE image_id=$1`,
+        [image_id]
     );
 };

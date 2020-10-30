@@ -38,16 +38,31 @@
         <div id="overlay-container">    
             <div id="overlay" @click="closeModal"></div>
             <div id="modal">
-                <div id="close-modal">
-                    <p id="close-modal-x" @click="closeModal">x</p>
-                </div>
-                <div id="modal-image"  >
-                    <img id="modal-image" :src="preview.url">
-                </div>
-                <p id="modal-title">{{preview.title}}</p>
-                <p id="modal-text">
-                    </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at}}
-                </p>
+                <div id="modal-layout">
+                    <div id="modal-image"  >
+                        <img id="modal-image" :src="preview.url">
+                    </div>
+                    <div id="modal-copy">
+                        <div id="modal-desc">
+                            <p id="modal-title">{{preview.title}}</p>
+                            <p id="modal-text">
+                                </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at}}
+                            </p>
+                            <!-- <form id="enter-comments">
+                                <input v-model='name' type="text" placeholder="name" name="name" class="input-field-comment-name">
+                                <input v-model='comment' type="text" placeholder="comment" name="comment" class="input-field-comment">
+                                <input v-model='imageId' type="hidden" name="imageId">
+                                <button @click='postComment'>Submit</button>
+                            </form>     -->
+                            <div class="display-comments" v-for="comment in comments">
+                                </br><span id="comments">{{comment.comment}}</span></br>
+                            </div>
+                        </div>
+                        <div id="close-modal">
+                            <p id="close-modal-x" @click="closeModal">x</p>
+                        </div>
+                    </div>
+                </div>    
             </div>
         </div>
     </script>    

@@ -35,11 +35,8 @@ app.use(
 );
 ///////////////////////////////////////routes
 app.get("/images", (req, res) => {
-    console.log("req.body in GET /images", req.body);
-
     db.getImages()
         .then(({ rows }) => {
-            console.log("rows in GET /images:", rows);
             res.json(rows);
         })
         .catch((err) => {
@@ -49,11 +46,9 @@ app.get("/images", (req, res) => {
 
 app.get("/more/:lowestId", (req, res) => {
     const { lowestId } = req.params;
-    console.log("req.params in GET /more", req.params);
     db.loadMoreImages(lowestId)
         .then(({ rows }) => {
             res.json(rows);
-            console.log("rows in GET /more:", rows);
         })
         .catch((err) => {
             console.log("error in GET /more with loadMoreImages()", err);
@@ -62,12 +57,10 @@ app.get("/more/:lowestId", (req, res) => {
 
 app.get("/images/:id", (req, res) => {
     const { id } = req.params;
-    console.log("req.body:", req.params);
-    console.log("id:", id);
     db.getImageById(id)
         .then(({ rows }) => {
             res.json(rows[0]);
-            console.log("rows is in getImagebyId: ", rows);
+            // console.log("rows is in getImagebyId: ", rows);
         })
         .catch((err) => {
             console.log("error in GET /images with getImages()", err);
@@ -82,7 +75,6 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         db.addImages(url, username, title, description)
             .then((results) => {
                 res.json(results);
-                console.log("results", results);
             })
             .catch((err) => {
                 console.log("error in POST /upload with addImages()", err);
@@ -90,6 +82,20 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     } else {
         res.json({ success: false });
     }
+});
+
+app.get("/comments/:id", (req, res) => {
+    const { id } = req.params;
+    console.log("req.params in GET /comments/id:", req.params);
+    console.log("id:", id);
+    db.getCommentsById(id)
+        .then(({ rows }) => {
+            res.json(rows);
+            // console.log("rows is in GET /comments/id: ", rows);
+        })
+        .catch((err) => {
+            console.log("error in GET /images with getImages()", err);
+        });
 });
 
 app.listen(8080, () => {

@@ -7,7 +7,10 @@
         props: ["imageId"],
         // id: [""],
         data: function () {
-            return { preview: "" };
+            return {
+                preview: "",
+                comments: [],
+            };
         },
         watch: {
             id: function () {
@@ -25,15 +28,21 @@
                 .get(`/images/${this.imageId}`)
                 .then(function (response) {
                     me.preview = response.data;
-                    console.log("GET axious response ", me.preview);
                 })
                 .catch(function (err) {
                     console.log("error in POST /images", err);
                 });
+
+            // axios for get comments by id
+            axios.get(`/comments/${this.imageId}`).then(function (response) {
+                console.log("res in GET axios /commentsid", response);
+                me.comments = response.data;
+                console.log("me.comments GET axios /commentsid", me.comments);
+            });
         },
         methods: {
             closeModal: function () {
-                console.log("closeModal runs and about to EMIT from component");
+                // console.log("closeModal runs and about to EMIT from component");
                 this.$emit("close"); //
             },
         },
@@ -54,16 +63,14 @@
             const me = this;
 
             addEventListener("hashchange", function () {
-                console.log("hash has changed successfully");
+                // console.log("hash has changed successfully");
                 me.imageId = location.hash.slice(1);
-                console.log("ImageId", me.imageId);
             });
 
             axios
                 .get("/images")
                 .then(function (response) {
                     me.images = response.data; // works
-                    console.log("me.images in axios /GET /images", me.images);
                 })
                 .catch(function (err) {
                     console.log("error in POST /images", err);
@@ -97,18 +104,8 @@
                 let me = this;
                 let lowestId = this.images[this.images.length - 1].id;
                 axios
-                    .get(`/more/${lowestId}`) //request to the server
+                    .get(`/more/${lowestId}`)
                     .then(function (response) {
-                        // in .then(), we listen to server response
-                        console.log(
-                            "response.data in loadMore axios",
-                            response.data
-                        );
-                        console.log(
-                            "response.data[response.data.length - 1].id",
-                            response.data[response.data.length - 1].id
-                        );
-                        console.log("lowestId", lowestId);
                         for (let i = 0; i < response.data.length; i++) {
                             me.images.push(response.data[i]);
                         }
@@ -129,7 +126,6 @@
                 this.file = e.target.files[0]; // grab the selected file
             },
             imagePopup: function (e) {
-                console.log("id of image clicked", e);
                 this.imageId = e;
             },
             closeModal: function () {
