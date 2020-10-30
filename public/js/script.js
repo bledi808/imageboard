@@ -12,37 +12,46 @@
                 comments: [],
                 comment: "",
                 username: "",
+                // previousId: "",
+                // nextId: "",
             };
         },
         watch: {
-            id: function () {
-                console.log("the prop changed");
-                // axios request here to get the info for the new ImageId (you can copy and paste everything in mounted here - better would be to store this axios in a function outside and call the function here and below - more dry - i.e. add a method to vue.component for the axios and call this method in watch and in mounted)
-                //when calling method: this.methodName()
-
-                //handle case of user putting in an id that doesnt exist in our DB -
-                //if we get back a response from the server with no image id (as the ID requested by user doesnt exist in DB), easiest thing to do is close the modal
+            imageId: function () {
+                this.renderModal();
             },
         }, // used for clikcing next/back to access different image in modal mode
         mounted: function () {
+            this.renderModal();
             const me = this;
-            axios
-                .get(`/images/${this.imageId}`)
-                .then(function (response) {
-                    me.preview = response.data;
-                })
-                .catch(function (err) {
-                    console.log("error in POST /images", err);
-                });
-
+            // To do this, you should modify the data retrieved by the ajax request your component makes so that it includes, in addition to all of the data for the current image, the id of the previous image and the id of the next image.
             // axios for get comments by id
             axios.get(`/comments/${this.imageId}`).then(function (response) {
-                console.log("res in GET axios /commentsid", response);
+                // console.log("res in GET axios /commentsid", response);
                 me.comments = response.data;
-                console.log("me.comments GET axios /commentsid", me.comments);
+                // console.log("me.comments GET axios /commentsid", me.comments);
             });
         },
         methods: {
+            renderModal: function () {
+                const me = this;
+                console.log("the prop changed");
+                axios
+                    .get(`/images/${this.imageId}`)
+                    .then(function (response) {
+                        if (response.data) {
+                            me.preview = response.data;
+                        } else {
+                            me.closeModal();
+                        }
+                        // me.preview = response.data;
+
+                        // console.log("me.preview in component axios", response);
+                    })
+                    .catch(function (err) {
+                        console.log("error in POST /images", err);
+                    });
+            },
             closeModal: function () {
                 // console.log("closeModal runs and about to EMIT from component");
                 this.$emit("close"); //
@@ -60,12 +69,24 @@
                 axios
                     .post("/comment", newComment)
                     .then(function (response) {
-                        me.comments.unshift(response.data);
-                        // console.log("me.comments", me.comments);
+                        console.log("comments response:", response);
+                        if (
+                            response.data.comment != "" &&
+                            response.data.username != ""
+                        ) {
+                            me.comments.unshift(response.data);
+                            me.comment = "";
+                            me.username = "";
+                            console.log("me.comments", me.comments);
+                        }
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /comment", err);
                     });
+            },
+            nextImage: function () {
+                console.log("nextImage running");
+                ///
             },
         },
     });
@@ -114,7 +135,17 @@
                 axios
                     .post("/upload", formData)
                     .then(function (response) {
-                        images.unshift(response.data.rows[0]);
+                        // if (
+                        //     (response.data.title != "" &&
+                        //         response.data.username != "",
+                        //     response.data.description != "")
+                        // ) {
+                        images.unshift(response.data);
+                        self.title = "";
+                        self.description = "";
+                        self.username = "";
+                        self.file = null;
+                        // }
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /upload", err);

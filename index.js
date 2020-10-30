@@ -74,8 +74,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const url = s3Url + filename;
     if (req.file) {
         db.addImages(url, username, title, description)
-            .then((results) => {
-                res.json(results);
+            .then(({ rows }) => {
+                console.log("upload response", rows[0]);
+                res.json(rows[0]);
             })
             .catch((err) => {
                 console.log("error in POST /upload with addImages()", err);

@@ -61,8 +61,20 @@
                                 </br><span id="comments">{{comment.comment}}</span></br>
                             </div>
                         </div>
-                        <div id="close-modal">
-                            <p id="close-modal-x" @click="closeModal">x</p>
+                        <div class="vertical-bar">
+                            <div id="close-modal">
+                                <p id="close-modal-x" @click="closeModal">x</p>
+                            </div>
+                            <div class="nav-buttons"
+                                <div>
+                                    <button @click='nextImage' id="next">></button>
+                                    <button id="next"style="border: none">></button>
+                                </div>
+                                <div>
+                                    <!-- <button @click='previousImage' id="previous" style="border: none"><</button> -->
+                                    <button id="previous" style="border: none"><</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>    
