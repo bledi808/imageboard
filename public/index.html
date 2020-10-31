@@ -45,19 +45,21 @@
                     <div id="modal-copy">
                         <div id="modal-desc">
                             <div>
-                                <p id="modal-title">{{preview.title}}</p>
+                                <p id="modal-title">name: {{preview.title}}</p>
                                 <p id="modal-text">
-                                    </br>{{preview.description}}</br>{{preview.username}}</br>{{preview.created_at.slice(0,10)}}
+                                    </br>desc: {{preview.description}}</br>uploaded by: {{preview.username}}</br>date: {{preview.created_at.slice(0,10)}} </br>
                                 </p>
                             </div>
                             <div>
                                 <form id="enter-comments">
+                                </br>
                                     <input v-model='username' type="text" placeholder="Name" name="name">
                                     <input v-model='comment' type="text" placeholder="Comment" name="comment">
                                     <button @click='addComment'>Comment</button>
                                 </form>   
                             </div> 
                             <div class="display-comments" v-for="comment in comments">
+                                </br><span id="comments">{{comment.username}} says:</span>
                                 </br><span id="comments">{{comment.comment}}</span></br>
                             </div>
                         </div>
@@ -67,12 +69,10 @@
                             </div>
                             <div class="nav-buttons"
                                 <div>
-                                    <button @click='nextImage' id="next">></button>
-                                    <button id="next"style="border: none">></button>
+                                    <button @click='nextImage' id="next" style="border: none">></button>
                                 </div>
                                 <div>
-                                    <!-- <button @click='previousImage' id="previous" style="border: none"><</button> -->
-                                    <button id="previous" style="border: none"><</button>
+                                    <button @click='previousImage' id="previous" style="border: none"><</button>
                                 </div>
                             </div>
                         </div>

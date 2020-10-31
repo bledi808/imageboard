@@ -12,24 +12,21 @@
                 comments: [],
                 comment: "",
                 username: "",
-                // previousId: "",
-                // nextId: "",
+                nextId: "",
+                previousId: "",
             };
         },
         watch: {
             imageId: function () {
                 this.renderModal();
+                // this.nextImage(this.nextId);
             },
         }, // used for clikcing next/back to access different image in modal mode
         mounted: function () {
             this.renderModal();
             const me = this;
-            // To do this, you should modify the data retrieved by the ajax request your component makes so that it includes, in addition to all of the data for the current image, the id of the previous image and the id of the next image.
-            // axios for get comments by id
             axios.get(`/comments/${this.imageId}`).then(function (response) {
-                // console.log("res in GET axios /commentsid", response);
                 me.comments = response.data;
-                // console.log("me.comments GET axios /commentsid", me.comments);
             });
         },
         methods: {
@@ -41,12 +38,17 @@
                     .then(function (response) {
                         if (response.data) {
                             me.preview = response.data;
+                            me.nextId = response.data.nextId;
+                            me.previousId = response.data.previousId;
+                            // console.log(
+                            //     "me.preview in component axios",
+                            //     response
+                            // );
+                            console.log("me.nextId:", me.nextId);
+                            console.log("me.previousId:", me.previousId);
                         } else {
                             me.closeModal();
                         }
-                        // me.preview = response.data;
-
-                        // console.log("me.preview in component axios", response);
                     })
                     .catch(function (err) {
                         console.log("error in POST /images", err);
@@ -85,8 +87,11 @@
                     });
             },
             nextImage: function () {
-                console.log("nextImage running");
-                ///
+                this.imageId = this.nextId;
+                console.log(this.imageId);
+            },
+            previousImage: function () {
+                this.imageId = this.previousId;
             },
         },
     });
@@ -132,20 +137,15 @@
 
                 const self = this;
                 let images = self.images;
+
                 axios
                     .post("/upload", formData)
                     .then(function (response) {
-                        // if (
-                        //     (response.data.title != "" &&
-                        //         response.data.username != "",
-                        //     response.data.description != "")
-                        // ) {
                         images.unshift(response.data);
                         self.title = "";
                         self.description = "";
                         self.username = "";
-                        self.file = null;
-                        // }
+                        // self.file = null;
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /upload", err);

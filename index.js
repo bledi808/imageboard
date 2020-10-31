@@ -5,6 +5,7 @@ const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
 const s3 = require("./s3");
+const { monitorEventLoopDelay } = require("perf_hooks");
 const s3Url = "https://s3.amazonaws.com/pimento-imgboard/";
 
 app.use(express.static("public"));
@@ -50,6 +51,7 @@ app.get("/more/:lowestId", (req, res) => {
     db.loadMoreImages(lowestId)
         .then(({ rows }) => {
             res.json(rows);
+            console.log("rows in load more", rows);
         })
         .catch((err) => {
             console.log("error in GET /more with loadMoreImages()", err);
@@ -61,10 +63,11 @@ app.get("/images/:id", (req, res) => {
     db.getImageById(id)
         .then(({ rows }) => {
             res.json(rows[0]);
-            // console.log("rows is in getImagebyId: ", rows);
+            console.log("rows is in getImagebyId: ", rows);
+            console.log("rows[0] is in getImagebyId: ", rows[0]);
         })
         .catch((err) => {
-            console.log("error in GET /images with getImages()", err);
+            console.log("error in GET /images with getImagesbyId()", err);
         });
 });
 
