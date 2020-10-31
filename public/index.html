@@ -65,14 +65,15 @@
                                     <button @click="addComment" id="comment-button" class="button">Add comment</button>
                                 </form>   
                             </div> 
-                            <div class="display-comments" v-for="comment in comments">
-                                
+                            <div class="display-comments">
+                            <div class="" v-for="comment in comments">
                                 <div id="display-comments-user">
                                     <p id="">{{comment.username}}</p>
                                 </div>
-                                <div id="display-comments-comment">
+                                <div id="display-comments">
                                     <p id="">{{comment.comment}}</p>
                                 </div>
+                            </div>
                             </div>
                         </div>
                         <div class="vertical-bar">
