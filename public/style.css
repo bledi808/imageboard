@@ -313,9 +313,19 @@ img {
     /* box-shadow: 1px 1px 4px rgb(182, 180, 180); */
 }
 
+#delete-button {
+    margin-right: 20px;
+}
+
+#delete-button:hover {
+    color: tomato;
+    border: 1px tomato solid;
+    background-color: white;
+}
+
 #nav-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 80px 1fr 1fr;
     font-size: large;
     margin-top: 19px;
 }

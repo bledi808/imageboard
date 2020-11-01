@@ -66,7 +66,9 @@ module.exports.getCommentsById = (image_id) => {
     return db.query(
         `
         SELECT * FROM comments
-        WHERE image_id=$1`,
+        WHERE image_id=$1
+        ORDER BY id DESC
+`,
         [image_id]
     );
 };
