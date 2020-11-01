@@ -2,26 +2,6 @@
 
 // IIFY
 (function () {
-    var inputs = document.querySelectorAll(".input-file");
-    Array.prototype.forEach.call(inputs, function (input) {
-        var label = input.nextElementSibling,
-            labelVal = label.innerHTML;
-
-        input.addEventListener("change", function (e) {
-            var fileName = "";
-            if (this.files && this.files.length > 1) {
-                fileName = (
-                    this.getAttribute("data-multiple-caption") || ""
-                ).replace("{count}", this.files.length);
-                fileName = e.target.value;
-            } else if (fileName) {
-                label.querySelector("span").innerHTML = fileName;
-            } else {
-                label.innerHTML = labelVal;
-            }
-        });
-    });
-
     Vue.component("my-component", {
         template: "#template",
         props: ["imageId"],
@@ -39,15 +19,12 @@
         watch: {
             imageId: function () {
                 this.renderModal();
-                // this.nextImage(this.nextId);
+                this.displayComments();
             },
         }, // used for clikcing next/back to access different image in modal mode
         mounted: function () {
             this.renderModal();
-            const me = this;
-            axios.get(`/comments/${this.imageId}`).then(function (response) {
-                me.comments = response.data;
-            });
+            this.displayComments();
         },
         methods: {
             renderModal: function () {
@@ -60,18 +37,20 @@
                             me.preview = response.data;
                             me.nextId = response.data.nextId;
                             me.previousId = response.data.previousId;
-                            // console.log(
-                            //     "me.preview in component axios",
-                            //     response
-                            // );
-                            console.log("me.nextId:", me.nextId);
-                            console.log("me.previousId:", me.previousId);
                         } else {
                             me.closeModal();
                         }
                     })
                     .catch(function (err) {
                         console.log("error in POST /images", err);
+                    });
+            },
+            displayComments: function () {
+                const me = this;
+                axios
+                    .get(`/comments/${this.imageId}`)
+                    .then(function (response) {
+                        me.comments = response.data;
                     });
             },
             closeModal: function () {
@@ -108,7 +87,6 @@
             },
             nextImage: function () {
                 this.imageId = this.nextId;
-                console.log(this.imageId);
             },
             previousImage: function () {
                 this.imageId = this.previousId;
@@ -149,6 +127,11 @@
                 e.preventDefault();
                 console.log("uploadImage running");
 
+                if (this.title == "" || this.username == "") {
+                    console.log("empty empty");
+                    return;
+                }
+
                 var formData = new FormData();
                 formData.append("title", this.title);
                 formData.append("description", this.description);
@@ -166,6 +149,7 @@
                         self.description = "";
                         self.username = "";
                         // self.file = null;
+                        self.file.name = "";
                     })
                     .catch(function (err) {
                         console.log("error in axios POST /upload", err);
@@ -197,6 +181,19 @@
                 console.log("selectImage running");
 
                 this.file = e.target.files[0]; // grab the selected file
+                let labelName = this.file.name;
+                // var inputs = document.querySelectorAll(".input-file");
+                var inputs = document.querySelectorAll(".input-file");
+                Array.prototype.forEach.call(inputs, function (input) {
+                    var label = input.nextElementSibling,
+                        labelVal = labelName;
+                    var fileName = "";
+                    if (fileName) {
+                        label.querySelector("span").innerHTML = fileName;
+                    } else {
+                        label.innerHTML = labelVal;
+                    }
+                });
             },
             imagePopup: function (e) {
                 this.imageId = e;

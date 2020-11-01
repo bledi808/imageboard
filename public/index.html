@@ -6,13 +6,15 @@
     </head>
 <body>
     <div id="main" >
-        <h3 id="heading">Spomenik database </h3>    
+        <h3 id="heading">Spomenik Database </h3>    
         <form id="inputs">
             <input  v-model="title" type="text" name="title" placeholder="Image name" autocomplete ="off" class="input">
             <input v-model="description" type="text" name="description" placeholder="Description" autocomplete ="off" class="input">
             <input v-model="username" type="text" name="username" placeholder="Username" autocomplete ="off" class="input">
-            <input @change="selectImage" id="file" type="file" name="file" placeholder="image/*" class="input-file" data-multiple-caption="'{count} files selected' multiple"/>
-            <label for="file">Select image</label>
+            <input @change="selectImage" id="file" type="file" name="file" placeholder="image/*" class="input-file" data-multiple-caption="{count} files selected" multiple/>
+            <!-- <input type="file" name="file" id="file" class="inputfile" data-multiple-caption="{count} files selected" multiple /> -->
+
+            <label id ="file-label" for="file">Select image</label>
             <button @click="uploadImage" class="button">Add image</button>    
         </form>
         <div id="item-container">          
@@ -21,7 +23,7 @@
                     <div id="item-image" >
                         <img v-bind:src="image.url">
                     </div>
-                        <a class="item-name">{{image.title}}</a>
+                        <a class="item-name" :href="'#'+ image.id" style="text-decoration:none">{{image.title}}</a>
                 </a>    
             </div>            
     <!-------------------------- RENDER COMPONENT - INSIDE MAIN VUE EL -------------------------->
@@ -44,50 +46,44 @@
                     <div id="modal-image"  >
                         <img :src="preview.url">
                     </div>
-                    <div id="modal-copy">
-                        <div id="modal-desc">
-                            <div>
-                                <p id="modal-title">{{preview.title}}</p>
-                                <div id="modal-text">
-                                    <div id=desc-div>
-                                        <p id="desc">{{preview.description}}</p>
-                                    </div>
-                                    <div id=uploader-div>
-                                        <p id="username">{{preview.username}}</p>
-                                        <p id="date">{{preview.created_at.slice(0,10)}} </p>
-                                    </div>
-                                </div>
+                    <!-- <div id="modal-copy"> -->
+                    <div id="modal-desc">
+                        <div id="modal-header">
+                            <p id="modal-title">{{preview.title}}</p>
+                            <p id="close-modal-x" @click="closeModal">x</p>
+                            <!-- <div> -->                            
+                        </div>
+                        <div id="modal-text">
+                            <div id=uploader-div>
+                                <p id="username">{{preview.username}}</p>
+                                <p id="date">{{preview.created_at.slice(0,10)}} </p>
                             </div>
-                            <div id="comments">
-                                <form id="enter-comments">
-                                    <input v-model="username" id="name-input" class="input" type="text" placeholder="Name" name="name">
-                                    <input v-model="comment" id="comment-input"class="input" type="text" placeholder="Comment" name="comment">
-                                    <button @click="addComment" id="comment-button" class="button">Add comment</button>
-                                </form>   
-                            </div> 
-                            <div class="display-comments">
+                            <div id=desc-div>
+                                <p id="desc">{{preview.description}}</p>
+                            </div>
+                        </div>
+                        <div id="comments">
+                            <form id="enter-comments">
+                                <input v-model="username" id="name-input" class="input" type="text" placeholder="Name" name="name">
+                                <input v-model="comment" id="comment-input"class="input" type="text" placeholder="Comment" name="comment">
+                                <button @click="addComment" id="comment-button" class="button">Add comment</button>
+                            </form>   
+                        </div> 
+                        <div class="display-comments">
                             <div class="" v-for="comment in comments">
                                 <div id="display-comments-user">
                                     <p id="">{{comment.username}}</p>
                                 </div>
-                                <div id="display-comments">
+                                <div id="display-comments-comment">
                                     <p id="">{{comment.comment}}</p>
                                 </div>
                             </div>
-                            </div>
                         </div>
-                        <div class="vertical-bar">
-                            <div id="close-modal">
-                                <p id="close-modal-x" @click="closeModal">x</p>
-                            </div>
-                            <div class="nav-buttons"
-                                <div>
-                                    <button @click='nextImage' id="next" style="border: none">></button>
-                                </div>
-                                <div>
-                                    <button @click='previousImage' id="previous" style="border: none"><</button>
-                                </div>
-                            </div>
+                        <div id="nav-buttons">
+                            <!-- <div> -->
+                                <button @click='previousImage' class="button" id="previous-button">❮ Previous</button>
+                                <button @click='nextImage' class="button" id="next-button">Next ❯</button>
+                            <!-- </div> -->
                         </div>
                     </div>
                 </div>    
