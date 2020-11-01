@@ -91,6 +91,19 @@
             previousImage: function () {
                 this.imageId = this.previousId;
             },
+            deleteImage: function () {
+                console.log("deleteImage running");
+                const me = this;
+                axios
+                    .get(`/delete/${this.imageId}`)
+                    .then(function () {
+                        // console.log("response in axios delete image", response);
+                        me.closeModal();
+                    })
+                    .catch(function (err) {
+                        console.log("error in axios POST /more", err);
+                    });
+            },
         },
     });
 
@@ -109,7 +122,6 @@
             const me = this;
 
             addEventListener("hashchange", function () {
-                // console.log("hash has changed successfully");
                 me.imageId = location.hash.slice(1);
             });
 

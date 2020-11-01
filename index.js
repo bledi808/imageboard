@@ -63,11 +63,22 @@ app.get("/images/:id", (req, res) => {
     db.getImageById(id)
         .then(({ rows }) => {
             res.json(rows[0]);
-            console.log("rows is in getImagebyId: ", rows);
-            console.log("rows[0] is in getImagebyId: ", rows[0]);
         })
         .catch((err) => {
             console.log("error in GET /images with getImagesbyId()", err);
+        });
+});
+
+app.get("/delete/:id", (req, res) => {
+    const { id } = req.params;
+    db.deleteImageById(id)
+        .then(({ rows }) => {
+            res.json(rows[0]);
+            console.log("rows in delete", rows);
+            console.log("rows[0] in delete", rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in GET /delete/id with deleteImageById()", err);
         });
 });
 

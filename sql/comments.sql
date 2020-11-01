@@ -4,26 +4,26 @@ CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     comment VARCHAR NOT NULL,
     username VARCHAR NOT NULL,
-    image_id INT NOT NULL REFERENCES images(id),
+    image_id INT NOT NULL REFERENCES images(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-INSERT INTO comments (comment, username, image_id) VALUES (
-    'nice photo dude, wowow',
-    'romario',
-    17
-);
-INSERT INTO comments (comment, username, image_id) VALUES (
-    'are you, like, a photographer?',
-    'bebeto',
-    16
-);
-INSERT INTO comments (comment, username, image_id) VALUES (
-    'what a boring snap',
-    'rivaldo',
-    15
-);
+-- INSERT INTO comments (comment, username, image_id) VALUES (
+--     'nice photo dude, wowow',
+--     'romario',
+--     17
+-- );
+-- INSERT INTO comments (comment, username, image_id) VALUES (
+--     'are you, like, a photographer?',
+--     'bebeto',
+--     16
+-- );
+-- INSERT INTO comments (comment, username, image_id) VALUES (
+--     'what a boring snap',
+--     'rivaldo',
+--     15
+-- );
 
 INSERT INTO comments (comment, username, image_id) VALUES (
     'nice photo dude, wowow',

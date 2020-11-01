@@ -51,15 +51,6 @@ module.exports.getImageById = (image_id) => {
     );
 };
 
-// module.exports.getImageById = (image_id) => {
-//     return db.query(
-//         `
-//         SELECT * FROM images
-//         WHERE id=$1`,
-//         [image_id]
-//     );
-// };
-
 module.exports.addImages = (url, username, title, description) => {
     return db.query(
         `
@@ -88,5 +79,15 @@ module.exports.addComment = (comment, username, id) => {
         RETURNING *
         `,
         [comment, username, id]
+    );
+};
+
+exports.deleteImageById = (image_id) => {
+    return db.query(
+        `
+        DELETE FROM images 
+        WHERE id = $1
+        `,
+        [image_id]
     );
 };
