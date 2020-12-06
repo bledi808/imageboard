@@ -128,6 +128,8 @@ app.post("/comment", (req, res) => {
         });
 });
 
-app.listen(8080, () => {
-    console.log("imageboard running");
-});
+if (require.main == module) {
+    app.listen(process.env.PORT || 8080, () =>
+        console.log("imageboard running")
+    );
+}
